@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import Message from './../components/Message'
 
 
-function MessageContainer({message,message1}) {
+function MessageContainer({message}) {
 
   return (
-    <Message message={message} message1={message1}/>
+    <Message message={message}/>
   );
 }
 

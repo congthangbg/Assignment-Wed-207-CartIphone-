@@ -1,5 +1,6 @@
 import react from 'react';
-function Message( {message,message1}) {
+import PropTypes from 'prop-types';
+function Message( {message}) {
   return (
     <h3>
       <span className="badge amber darken-2">
@@ -8,6 +9,9 @@ function Message( {message,message1}) {
     
     </h3>
   );
+}
+Message.propTypes ={
+  message: PropTypes.string.isRequired,
 }
 
 export default Message;

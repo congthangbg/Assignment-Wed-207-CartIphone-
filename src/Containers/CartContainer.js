@@ -39,15 +39,13 @@ function CartContainer({ cart, onDelete, onChangeMessage,onUpdate }) {
   CartContainer.propTypes = {
     cart: PropTypes.arrayOf(PropTypes.shape({
       product: PropTypes.shape({
-        id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        inventory: PropTypes.number.isRequired,
+        //price: PropTypes.number.isRequired,
         rating: PropTypes.number.isRequired
       }).isRequired,
-      quantity: PropTypes.number.isRequired
+      solg: PropTypes.number.isRequired
     })).isRequired,
     onChangeMessage:PropTypes.func.isRequired,
     onDelete:PropTypes.func.isRequired,
@@ -75,8 +73,8 @@ const mapDispatchToProps = (dispatch, props) => {
     onChangeMessage: (message) => {
       dispatch(actChangeMessage(message))
     },
-    onUpdate: (product,quantity) => {
-      dispatch(actUpdateProduct(product, quantity))
+    onUpdate: (product,solg) => {
+      dispatch(actUpdateProduct(product, solg))
     }
   }
 }

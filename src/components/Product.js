@@ -1,7 +1,8 @@
 import react from 'react';
 import * as Message from './../Contants/Message'
-function Product({ product, onAddToCart1, onChangeMessage,setMessage1}) {
+function Product({ product, onAddToCart1, onChangeMessage}) {
   const onAddToCart = (product) => {
+    alert("Thêm vào giỏ hàng thành công !")
     onAddToCart1(product);
    onChangeMessage(Message.MSG_ADD_TO_CART_SUCCSESS)
   }
@@ -16,10 +17,11 @@ function Product({ product, onAddToCart1, onChangeMessage,setMessage1}) {
     }
     return result;
   }
+
   return (
-    <div className="col-lg-4 col-md-6 mb-r">
+    <div className="col-lg-3 col-md-6  mb-r">
       <div className="card text-center card-cascade narrower">
-        <div className="view overlay hm-white-slight z-depth-1">
+        <div className="view overlay hm-white-slight z-depth-1 mt-3">
           <img src={product.image}
             className="img-fluid" alt={product.name} />
           <a>

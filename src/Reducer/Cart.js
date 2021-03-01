@@ -6,16 +6,16 @@ var initialState = data ? data : []
 
 const Products = (state = initialState, action) => {
    var index = -1;
-   var { product, quantity } = action;
+   var { product, solg } = action;
    switch (action.type) {
       case Types.ADD_TO_CART:
          index = findProductIndex(state, product);
          if (index !== -1) {
-            state[index].quantity += quantity
+            state[index].solg += solg
          } else {
             state.push({
                product: action.product,
-               quantity: action.quantity
+               solg: action.solg
             })
          }
          localStorage.setItem('CART', JSON.stringify(state))
@@ -30,10 +30,11 @@ const Products = (state = initialState, action) => {
       case Types.UPDATE_PRODUCT:
          index = findProductIndex(state, product);
          if (index !== -1) {
-            state[index].quantity = quantity;
-            localStorage.setItem('CART', JSON.stringify(state))
-         return [...state];
+            state[index].solg = solg;
+           
          }
+         localStorage.setItem('CART', JSON.stringify(state))
+         return [...state];
       default: return [...state]
 
    }
