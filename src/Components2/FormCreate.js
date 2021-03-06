@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ApiCaller from '../AxiosUtils/ApiCaller'
 import axios from 'axios'
-function FormCreate({ click, idDelete, itemProduct, setItemProduct, products,
-   setClick, data, setData, setStateForm, onClear }) {
+function FormCreate({ click, idDelete, itemProduct, setItemProduct,
+   Cate, data, setData, setStateForm, onClear }) {
 
    const onChangHandler = (event) => {
       const name = event.target.name;
@@ -12,6 +12,7 @@ function FormCreate({ click, idDelete, itemProduct, setItemProduct, products,
          [name]: value,
       })
    }
+   console.log(data);
    const handleSubmit = (event) => {
       const createProduct = "https://60122a3f5fffd8001708945f.mockapi.io/api/v1/my_Asm"
       event.preventDefault();
@@ -19,10 +20,10 @@ function FormCreate({ click, idDelete, itemProduct, setItemProduct, products,
          axios.post(createProduct, data)
             .then((response) => {
                setItemProduct([
-                  ...products,
+                  ...itemProduct,
                   response.data,
                ]);
-               products.push(data)
+               
                setStateForm(false)
             })
             .catch((error) => {
@@ -33,10 +34,10 @@ function FormCreate({ click, idDelete, itemProduct, setItemProduct, products,
          const UrlUpdate = "https://60122a3f5fffd8001708945f.mockapi.io/api/v1/my_Asm/" + data.id
          axios.put(UrlUpdate, data)
             .then((response) => {
-               const newProduct = products.map((value, index) => {
+               const newProduct = itemProduct.map((value, index) => {
                   if (index == click) {
                      setStateForm(false)
-                     products[index] = data
+                   
                      return response.data
                   } else {
                      return value;
@@ -50,9 +51,6 @@ function FormCreate({ click, idDelete, itemProduct, setItemProduct, products,
             })
       }
    }
-   // const handleDelete=(id) => {
-   //    idDelete(id)
-   // }
    //hideBtnADD
    let elmButton = <button type="submit" className="btn btn-primary ">Thêm</button>
    if (click != -1) {
@@ -82,9 +80,12 @@ function FormCreate({ click, idDelete, itemProduct, setItemProduct, products,
             <label htmlFor="inputEmail3" className="col-md-2 col-form-label">Hãng</label>
             <div className="col-md-8" >
                   <select  className="form-control browser-default custom-select " style={{height:"40px"}} name="description" onChange={onChangHandler} value={data.description} >
-                     <option defaultValue value="Apple">Apple</option>
-                     <option value="Samsung">Samsung</option>
-                     <option value="Oppo">Oppo</option>
+                     {Cate.map((value, index)=>{
+                        return (
+                              <option key={index} value={value.name}>{value.name}</option>
+                        )
+                     })}
+                     
                   </select>
                </div>
          </div>

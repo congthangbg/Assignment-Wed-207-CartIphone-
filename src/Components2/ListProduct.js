@@ -2,25 +2,23 @@ import React, { Component, useEffect, useState } from 'react';
 import FormControl from './FormControl'
 import FormCreate from './FormCreate'
 import FormTable from './FormTable'
-import Products from './../Reducer/Products'
 import { connect } from 'react-redux';
 import { Button } from '@material-ui/core';
 import ApiCaller from '../AxiosUtils/ApiCaller'
 import { includes, filter, orderBy as funcOrderBy, remove } from 'lodash';
-import { actRemoveFromCart, actUpdateProduct } from '../Actions';
 import axios from 'axios'
 import ItemRemove from './ItemRemove'
 
-function ListProduct({ products }) {
+function ListProduct() {
    const [click, setClick] = useState(-1);
    const formDataInitvalues = { id: "", name: "", image: "", description: "", price: "", rating: "" };
    const [data, setData] = useState(formDataInitvalues);
-   const [itemProduct, setItemProduct] = useState(products)
+   const [itemProduct, setItemProduct] = useState("")
    const [itemRemove, setItemRemove] = useState([])
+   const [Cate,setCate]= useState("")
   ///ẩn hiện button ADD(close)
   const [stateForm, setStateForm] = useState(false);
-
-   products.splice(0)
+   // products.splice(0)
    //Phân trang
    const limit = 8;
    const maxLimit =itemProduct.length-1;
@@ -50,10 +48,6 @@ function ListProduct({ products }) {
       })
    }, [page])
 
-   var items = itemProduct.map((value, index) => {
-      return products.push(value)
-   })
- 
    //ẩn hiện button ADD(close)
    const hideState = () => {
       if (!stateForm) {
@@ -63,15 +57,6 @@ function ListProduct({ products }) {
          setStateForm(false)
          onClear()
       }
-   }
-   const findIndex = (id) => {
-      var result = -1;
-      products.forEach((task, index) => {
-         if (task.id === id) {
-            result = index;
-         }
-      })
-      return result;
    }
    //search
    const [searchInput, setSearchInput] = useState("");
@@ -119,7 +104,7 @@ function ListProduct({ products }) {
    if (stateForm) {
       showStateForm = <FormCreate
          onClear={onClear}
-         products={products}
+         Cate={Cate}
          setItemProduct={setItemProduct}
          itemProduct={itemProduct}
          setStateForm={setStateForm}
@@ -141,11 +126,18 @@ function ListProduct({ products }) {
    let showStateRemove = null;
    if (stateRemove) {
       showStateRemove = <ItemRemove
-         products={products}
+        itemProduct={itemProduct}
          setItemProduct={setItemProduct}
          itemRemove={itemRemove}
          setItemRemove={setItemRemove} />
    }
+  // API
+  useEffect(() => {
+   ApiCaller("Category", "GET", null).then(response => {
+      const { data } = response
+      setCate(data)
+   })
+}, [])
 
    return (
       <div className='container'>
@@ -157,7 +149,7 @@ function ListProduct({ products }) {
                itemSearch={itemSearch}
                itemProduct={itemProduct}
                setItemProduct={setItemProduct}
-               products={products}
+               Cate={Cate}
                onClickSort={handleSort}
                orderBy={orderBy1}
                orderDir={orderDir1}
@@ -179,7 +171,8 @@ function ListProduct({ products }) {
                      setStateForm={setStateForm}
                      setData={setData}
                      setClick={setClick}
-                     products={products} />
+                     // products={products} 
+                     />
                </div>
             </div>
          </article>
@@ -202,10 +195,10 @@ function ListProduct({ products }) {
       </div>
    );
 }
-const mapStateToProps = state => {
-   return {
-      products: state.Products
-   }
-}
-
-export default connect(mapStateToProps, null)(ListProduct);
+// const mapStateToProps = state => {
+//    return {
+//       products: state.Products
+//    }
+// }
+export default (ListProduct);
+// export default connect(mapStateToProps, null)(ListProduct);

@@ -51,7 +51,7 @@ function ProductsContainer({onAddToCart,onChangeMessage,products,onChangeMessage
   itemSearch = filter(listFillter, (item) => {
      return includes(item.name.toLowerCase(), message3)
   }); 
-  console.log(message3);
+ 
   return (
     <Products onChangeMessageFilter={onChangeMessageFilter} onChangeMessageSearch={onChangeMessageSearch}>
       {message2=="Tatca"? showProducts(message3==""? listFillter: itemSearch) : showProducts(list)}
@@ -65,8 +65,6 @@ ProductsContainer.propTypes = {
       name: PropTypes.string.isRequired,
       image: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      rating: PropTypes.number.isRequired
     })
   ).isRequired,
   onChangeMessage:PropTypes.func.isRequired,

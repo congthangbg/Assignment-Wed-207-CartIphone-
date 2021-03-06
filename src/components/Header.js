@@ -1,6 +1,7 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Drawer } from '@material-ui/core'
 import { Menu, AccountCircle } from '@material-ui/icons'
+import ApiCaller from '../AxiosUtils/ApiCaller'
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,22 +10,27 @@ import {
 } from "react-router-dom";
 import { connect } from 'react-redux'
 import { actChangeMessage2} from '../Actions/index';
-function Header({message2,onChangeMessageFilter}) {
+function Header({message2,onChangeMessageFilter,logout}) {
   const [open, setOpen] = useState(false)
   const [anchor, setAnchor] = useState('left')
   const handleDrawer = () => {
     setOpen(true)
     setAnchor('left')
   }
-  const onApple=() => {
-    onChangeMessageFilter("Apple")
+  const onApple=(value) => {
+    onChangeMessageFilter(value)
+
   }
-  const onSamsung=() => {
-    onChangeMessageFilter("Samsung")
-  }
-  const onOppo=() => {
-    onChangeMessageFilter("Oppo")
-  }
+
+  const [listCate,setListCate] = useState("")
+  // API
+  useEffect(() => {
+    ApiCaller("Category", "GET", null).then(response => {
+       const { data } = response
+       setListCate(data)
+    })
+ }, [])
+
   return (
     <header>
 
@@ -44,22 +50,33 @@ function Header({message2,onChangeMessageFilter}) {
               <Link to="/ListProduct">Quản lý sản phẩm</Link>
             </li>
             <li className="breadcrumb-item">
+              <Link to="/Category">Quản lý danh mục</Link>
+            </li>
+            <li className="breadcrumb-item">
               <Link to="/MainCart">Giỏ hàng</Link>
             </li>
           </ol>
         </div>
-        <ul className="nav navbar-nav nav-flex-icons ml-auto">
-          <li className="nav-item dropdown">
+        
+        {/* <ul className=" nav navbar-nav nav-flex-icons ml-auto"> */}
+        <div className="row mr-3">
+        <Link to="/LoginForm"className="dropdown-item waves-effect waves-light">Đăng Nhập</Link>
+            
+        </div>  
+        <div className="row mr-3">
+        <Link to="/LoginForm" onClick={logout} className="dropdown-item waves-effect waves-light">Đăng Xuất</Link>
+            
+        </div> 
+          {/* <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle waves-effect waves-light" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">
               <i className="fa fa-user"></i> Tài Khoản</a>
             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-              <a className="dropdown-item waves-effect waves-light">Đăng Ký</a>
-              <a className="dropdown-item waves-effect waves-light">Đăng Nhập</a>
-              <a className="dropdown-item waves-effect waves-light">Đăng Xuất</a>
+              <Link to="/LoginForm"className="dropdown-item waves-effect waves-light">Đăng Nhập</Link>
+              <Link to="/LoginForm" className="dropdown-item waves-effect waves-light">Đăng Xuất</Link>
             </div>
-          </li>
-        </ul>
+          </li> */}
+        {/* </ul> */}
       </nav>
       <Drawer anchor={anchor}
         open={open}
@@ -122,19 +139,32 @@ function Header({message2,onChangeMessageFilter}) {
               </ul>
               <ul className="collapsible collapsible-accordion">
                 <li>
-                  <Link to="/MainCart" className="collapsible-header waves-effect arrow-r ">
-                    <i className=" fa fa-shopping-cart" />  Giỏ hàng
+                  <Link to="/Category" className="collapsible-header waves-effect arrow-r">
+                    <i className="fa fa-shopping-bag" /> Quản lý danh mục
                   </Link>
                 </li>
               </ul>
               <ul className="collapsible collapsible-accordion">
                 <li>
-                  <Link to="/Mainproduct" onClick={onApple} className="collapsible-header waves-effect arrow-r">
-                    <i className="fa fab fa-apple" />  Apple
+                  <Link to="/MainCart" className="collapsible-header waves-effect arrow-r ">
+                    <i className=" fa fa-shopping-cart" />  Giỏ hàng
                   </Link>
                 </li>
               </ul>
-              <ul className="collapsible collapsible-accordion">
+              {listCate?(
+                listCate.map((value, index)=>{
+                  return(
+                    <ul className="collapsible collapsible-accordion" key={index}>
+                <li>
+                  <Link to="/Mainproduct" onClick={() =>onApple(value.name)}  className="collapsible-header waves-effect arrow-r">
+                    <i className="fa fa-mobile" />  {value.name}
+                  </Link>
+                </li>
+              </ul>
+                  )
+                })
+              ):("")}
+              {/* <ul className="collapsible collapsible-accordion">
                 <li>
                   <Link to="/Mainproduct" onClick={onSamsung} className="collapsible-header waves-effect arrow-r">
                   <i className="fa fa-mobile"></i>  Samsung
@@ -147,7 +177,7 @@ function Header({message2,onChangeMessageFilter}) {
                   <i className="fa fad fa-mobile"></i>  Oppo
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
             </ul>
             : ""
           }

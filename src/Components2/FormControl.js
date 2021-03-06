@@ -2,10 +2,12 @@ import React, { Component, useEffect, useState } from 'react';
 import ListProduct from './ListProduct'
 import ApiCaller from '../AxiosUtils/ApiCaller'
 import PropTypes from 'prop-types';
+import { includes, filter, orderBy as funcOrderBy, remove,every } from 'lodash';
 
-function FormControl({ hideState, isStateForm, handlerSearch1,
-   onClickSort, orderBy, orderDir, products, itemProduct, setItemProduct, itemSearch, onFilter
+function FormControl({ hideState, isStateForm, handlerSearch1,Cate,
+   onClickSort, onFilter
 }) {
+   
    //hideBtnADD
    let elmButton = <button onClick={hideState} variant="outlined" className="btn-block bg-success form-control col-4 ml-2">
       Thêm sản phẩm
@@ -45,7 +47,18 @@ function FormControl({ hideState, isStateForm, handlerSearch1,
    let filterProducts = (hang) => {
       onFilter(hang)
    }
-
+const product = () => {
+   Cate.filter((val, idx)=>{
+      console.log(val);
+   })
+}
+const category = () => {
+   let item = [];
+   Cate.map((value, index) => {
+     return (
+      <button onClick={() =>  filterProducts(value.name)} value={value.name} className="dropdown-item" type="button">{value.name}</button>
+     )})
+}
    return (
       <div className="row mt-5" >
          <div className="col-md-5">
@@ -75,9 +88,13 @@ function FormControl({ hideState, isStateForm, handlerSearch1,
         </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
                <button onClick={() => { filterProducts("Tatca") }} className="dropdown-item" type="button">Tất cả</button>
-               <button onClick={() => { filterProducts("Apple") }} className="dropdown-item" type="button">Apple</button>
-               <button onClick={() => { filterProducts("Samsung") }} className="dropdown-item" type="button">Samsung</button>
-               <button onClick={() => { filterProducts("Oppo") }} className="dropdown-item" type="button">Oppo</button>
+              {Cate ?(
+                 Cate.map((value, index)=>{
+                    return (
+                     <button key={index} onClick={() => { filterProducts(value.name) }} className="dropdown-item" type="button">{value.name}</button>
+                    )
+                 })
+              ):("")}
             </div>
          </div>
          {elmButton}
@@ -86,4 +103,4 @@ function FormControl({ hideState, isStateForm, handlerSearch1,
    );
 }
 
-export default FormControl;
+export default (FormControl);

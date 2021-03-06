@@ -3,7 +3,7 @@ import { TableHead, TableRow, TableCell, TableBody, Button } from '@material-ui/
 import ApiCaller from '../AxiosUtils/ApiCaller'
 import axios from 'axios'
 import PropTypes from 'prop-types';
-function ItemRemove({itemRemove,setItemRemove,products,setItemProduct}) {
+function ItemRemove({itemRemove,setItemRemove,itemProduct,setItemProduct}) {
    
    const onItemRemove=(event,value,index) =>{
       const createProduct = "https://60122a3f5fffd8001708945f.mockapi.io/api/v1/my_Asm"
@@ -11,10 +11,9 @@ function ItemRemove({itemRemove,setItemRemove,products,setItemProduct}) {
             .then((response) => {
                const { data}= response
                setItemProduct([
-                  ...products,
+                  ...itemProduct,
                   response.data,
                ]);
-               products.push(data)
               //
               ApiCaller("itemRemove/"+value.id, "delete",null).then(response => {
                const listNew = itemRemove.filter((val, idx) => {

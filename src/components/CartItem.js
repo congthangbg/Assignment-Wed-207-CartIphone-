@@ -45,7 +45,7 @@ function CartItem({item,onDelete,onChangeMessage1,onUpdate} ) {
           </label>
         </div>
       </td>
-      <td>{showToTal(item.product.price,item.solg)}$</td>
+      <td>{showToTal(item.product.price,item.solg)} $</td>
       <td>
         <button onClick={()=>{onDeleteProduct(item.product)}}
          type="button"

@@ -1,8 +1,6 @@
-import react, { useState } from 'react';
-import Product from './Product';
-//import {connect} from 'react-redux'
-import { Input } from '@material-ui/core';
-import ProductsContainer from './../Containers/ProductContainer'
+import react, { useEffect, useState } from 'react';
+
+import ApiCaller from '../AxiosUtils/ApiCaller'
 function Products({children,onChangeMessageFilter,onChangeMessageSearch}) {
   // var showProducts=(products)=>{
   //   var result=null;
@@ -29,6 +27,14 @@ function Products({children,onChangeMessageFilter,onChangeMessageSearch}) {
     setSearchInput("")
     onChangeMessageSearch("")
  }
+ const [listCate,setListCate] = useState("")
+ // API
+ useEffect(() => {
+   ApiCaller("Category", "GET", null).then(response => {
+      const { data } = response
+      setListCate(data)
+   })
+}, [])
   return (
     <section className="section">
     <h1 className="section-heading">Danh Sách Sản Phẩm</h1>
@@ -40,9 +46,13 @@ function Products({children,onChangeMessageFilter,onChangeMessageSearch}) {
         </button>
          <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
          <button onClick={() =>fillHang("Tatca")}  className="dropdown-item" type="button">Tất cả</button>
-            <button onClick={() =>fillHang("Apple")}  className="dropdown-item" type="button">Apple</button>
-            <button onClick={() =>fillHang("Samsung")} className="dropdown-item" type="button">Samsung</button>
-            <button onClick={() =>fillHang("Oppo")} className="dropdown-item" type="button">Oppo</button>
+         {listCate?(
+            listCate.map((value, index)=>{
+               return (
+                <button key={index}onClick={() =>fillHang(value.name)}  className="dropdown-item" type="button">{value.name}</button>
+               )
+            })
+         ):("")}
          </div>
          <hr/>
       </div>

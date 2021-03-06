@@ -5,7 +5,7 @@ import { TableHead, TableRow, TableCell, TableBody, Button } from '@material-ui/
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function FormTable({ products, setClick, itemProduct, itemRemove, setItemRemove, productNew
+function FormTable({ setClick, itemProduct, itemRemove, setItemRemove, productNew
    , setData, setItemProduct, data, setStateForm, itemSearch }) {
 
    const onClickHandler = (event, index, value) => {
@@ -39,7 +39,6 @@ function FormTable({ products, setClick, itemProduct, itemRemove, setItemRemove,
          })
          setItemProduct(listNew)
       })
-      products.splice(index, 1)
    }
 
    return (
